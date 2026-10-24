@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Porra de notas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6fb;--paper:#fff;--ink:#14213d;--mute:#5b6784;--line:#c9d3e6;--grid:rgba(47,111,237,.09);--pred:#2f6fed;--real:#e8801a;--ok:#1f9d6b;--bad:#d64545;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1626;--paper:#162038;--ink:#e6ecfa;--mute:#93a1c4;--line:#2b3a60;--grid:rgba(120,160,255,.08);--pred:#6b9bff;--real:#f5a04a;--ok:#35c48b;--bad:#ef6b6b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1626;--paper:#162038;--ink:#e6ecfa;--mute:#93a1c4;--line:#2b3a60;--grid:rgba(120,160,255,.08);--pred:#6b9bff;--real:#f5a04a;--ok:#35c48b;--bad:#ef6b6b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:16px/1.5 'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg) linear-gradient(var(--grid) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/26px 26px}
+#app{max-width:980px;margin:0 auto;padding:22px 16px 64px}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,7vw,48px);font-weight:800}h2{font-size:clamp(24px,5vw,34px);margin:6px 0}h3{font-size:19px;margin:30px 0 8px}
+a{color:var(--pred)}small,.m{color:var(--mute)}small{font-size:12px;font-weight:400}.m{font-size:14px}
+nav{display:flex;gap:6px;margin:16px 0 22px;border-bottom:2px solid var(--line)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:8px 14px;font:600 16px inherit;color:var(--mute);cursor:pointer}
+nav button.on{color:var(--ink);border-color:var(--real)}
+button:focus-visible,input:focus-visible,.ex:focus-visible{outline:3px solid var(--pred);outline-offset:1px}
+.b,.g{font:600 14px inherit;padding:9px 14px;border-radius:8px;cursor:pointer;border:1.5px solid var(--ink)}
+.b{background:var(--ink);color:var(--bg)}.g{background:none;color:var(--ink)}
+input{font:inherit;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.row input{padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);min-width:0;flex:1 1 160px}
+.ex{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 8px;border-bottom:1px solid var(--line);cursor:pointer;background:var(--paper)}
+.ex:hover{background:color-mix(in srgb,var(--pred) 8%,var(--paper))}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;background:var(--paper);font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:3px 6px;text-align:center;font-size:14px;white-space:nowrap}
+td input{width:58px;text-align:center;border:0;background:transparent;padding:6px 2px}
+td.e0{background:color-mix(in srgb,var(--ok) 30%,transparent)}td.e1{background:color-mix(in srgb,var(--real) 30%,transparent)}td.e2{background:color-mix(in srgb,var(--bad) 30%,transparent)}
+td.sf{box-shadow:inset 0 0 0 2px var(--pred)}td.rl{border-left:3px solid var(--real)}
+.x{border:0;background:none;color:var(--mute);cursor:pointer;font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:2px;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:3px 4px 3px 12px;margin:3px 6px 3px 0;font-size:14px}
+.k{display:flex;flex-wrap:wrap;gap:6px 30px;margin:14px 0}.k div{min-width:120px}.k dt{font-size:13px;color:var(--mute)}.k dd{margin:0;font:800 24px 'Bricolage Grotesque',sans-serif}
+.br{display:grid;grid-template-columns:minmax(64px,100px) 1fr minmax(56px,auto);gap:8px;align-items:center;margin:5px 0;font-size:14px}
+.bt{position:relative;height:24px;background:linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/10% 100%;border-right:1px solid var(--line)}
+.bt i{position:absolute;border-radius:2px;background:var(--pred)}.bt i.r{background:var(--real)}.bt u{position:absolute;top:0;bottom:0;width:2px;background:var(--ink);opacity:.45}
+.bv{font-variant-numeric:tabular-nums;color:var(--mute);text-align:right}
+.lg{font-size:13px;color:var(--mute)}.lg b{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin:0 4px 0 10px}
+.sc{width:min(100%,380px);height:auto;font-size:11px;fill:var(--mute);background:var(--paper);border:1px solid var(--line)}
+.rk td,.rk th{padding:7px 12px}
+td input:disabled{color:var(--ink);-webkit-text-fill-color:var(--ink);opacity:1;cursor:not-allowed}
+.lk{background:var(--paper);border-left:4px solid var(--real);padding:8px 12px;margin:8px 0;font-size:14px}
+#t{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;max-width:90vw}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script></head><body>
+<div id="app"></div><div id="t" role="status" hidden></div>
+<script>
+const A=document.getElementById('app'),$=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=v=>v===''||v==null||isNaN(+v)?null:+v;
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const sd=a=>a.length<2?null:Math.sqrt(avg(a.map(x=>(x-avg(a))**2)));
+const f=(v,d=2)=>v==null?'–':v.toFixed(d).replace('.',',');
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+let S={},R=[],RS={},L={},OWN=false,db=null,V={t:'list',tab:'pred'},q=Promise.resolve();
+const mix=()=>{S={...RS};for(const id in L)S[id]={...(RS[id]||{}),...L[id],locked:true}};
+const lockbar=e=>e.locked?`<p class="lk"><b>Examen cerrado.</b> Las predicciones y las notas reales están bloqueadas${OWN?` · <a href="#" data-un="${V.id}">Reabrir examen</a>`:''}</p>`:OWN?(V.lk==V.id?`<p class="lk">¿Cerrar el examen? Se guardan las predicciones y notas actuales y nadie podrá cambiarlas. <a href="#" data-lkok="${V.id}">Sí, cerrar</a> · <a href="#" data-no="1">Cancelar</a></p>`:`<p class="lk"><a href="#" data-lk="${V.id}">Cerrar examen y bloquear notas</a> <small>(solo puedes tú)</small></p>`):'';
+const setRoster=l=>{R=l;if(db)q=q.then(()=>db.doc('meta/roster').set({members:l})).catch(fail)};
+const toast=m=>{const t=$('#t');t.textContent=m;t.hidden=false;setTimeout(()=>t.hidden=true,4500)};
+const mg=(t,p)=>{for(const k in p){const v=p[k];if(v&&typeof v==='object'&&!Array.isArray(v))t[k]=mg(t[k]&&typeof t[k]==='object'?t[k]:{},v);else t[k]=v}return t};
+const fail=()=>toast('No se pudo guardar. Puede que el examen esté cerrado o que hayas perdido la sesión.');
+const save=(id,p)=>{S[id]=mg(structuredClone(S[id]||{}),p);if(db)q=q.then(()=>db.doc('exams/'+id).update(p)).catch(fail)};
+const pr=(e,p,s)=>num(e.preds?.[p.id]?.[s.id]),re=(e,s)=>num(e.real?.[s.id]);
+const errs=e=>{const o=[];for(const p of e.players||[])for(const s of e.players||[]){const a=pr(e,p,s),r=re(e,s);if(a!=null&&r!=null)o.push({n:p.name,d:a-r,a,r})}return o};
+function rank(list){const m={};for(const e of list)for(const x of errs(e)){const k=x.n.trim().toLowerCase(),r=m[k]||(m[k]={n:x.n,c:0,s:0,h:0,b:0});r.c++;r.s+=Math.abs(x.d);r.b+=x.d;if(Math.abs(x.d)<=.5)r.h++}return Object.values(m).map(r=>({...r,mae:r.s/r.c,bias:r.b/r.c})).sort((a,b)=>a.mae-b.mae)}
+const rt=rows=>rows.length?`<div class="tw"><table class="rk"><thead><tr><th>#</th><th>Nombre</th><th>Error medio</th><th>Aciertos (±0,5)</th><th>Tendencia</th><th>Predicciones</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><th>${esc(r.n)}</th><td><b>${f(r.mae)}</b></td><td>${r.h} de ${r.c}</td><td>${r.bias>0?'+':''}${f(r.bias)}</td><td>${r.c}</td></tr>`).join('')}</tbody></table></div><p class="m">Error medio: diferencia media, en puntos, entre lo que predijo y la nota real (menos es mejor). Tendencia positiva: suele poner más nota de la que sale.</p>`:`<p class="m">Todavía no hay notas reales. Introduce las notas reales de un examen para ver el ranking.</p>`;
+const bars=(rows,{lo=0,hi=10,n=1}={})=>{const pc=x=>(x-lo)/(hi-lo)*100,z=pc(Math.max(lo,0));return rows.map(r=>`<div class="br"><span>${esc(r.l)}</span><div class="bt">${lo<0?`<u style="left:${z}%"></u>`:''}${r.v.map((v,i)=>v==null?'':`<i class="${lo<0?(v<0?'r':''):['','r'][i]||''}" style="left:${Math.min(z,pc(v))}%;width:${Math.abs(pc(v)-z)}%;top:${i*100/n}%;height:${100/n}%"></i>`).join('')}</div><span class="bv">${r.v.map(v=>f(v)).join(' / ')}</span></div>`).join('')};
+const sc=pts=>{const X=v=>30+v*26,Y=v=>270-v*26;return `<svg class="sc" viewBox="0 0 300 300" role="img" aria-label="Nota predicha frente a nota real">${[0,2,4,6,8,10].map(v=>`<path d="M${X(v)} 10V270M30 ${Y(v)}H290" stroke="var(--line)" stroke-width=".7"/><text x="${X(v)}" y="286" text-anchor="middle">${v}</text><text x="24" y="${Y(v)+4}" text-anchor="end">${v}</text>`).join('')}<path d="M${X(0)} ${Y(0)}L${X(10)} ${Y(10)}" stroke="var(--real)" stroke-width="2" stroke-dasharray="5 4"/>${pts.map(p=>`<circle cx="${X(p.r)}" cy="${Y(p.a)}" r="4" fill="var(--pred)" fill-opacity=".55"/>`).join('')}</svg>`};
+function grid(e){const P=e.players||[],lk=e.locked;return (lk?'':`<form class="row" data-f="player"><input name="n" list="rl" placeholder="Añadir o recuperar a un alumno" required maxlength="30" aria-label="Nombre del alumno"><datalist id="rl">${R.filter(r=>!P.some(p=>p.id==r.id)).map(r=>`<option value="${esc(r.name)}">`).join('')}</datalist><button class="b">Añadir alumno</button></form>`)+(P.length?`<div class="tw"><table><thead><tr><th>Alumno<br><small>nota que se predice</small></th>${P.map(p=>`<th>${esc(p.name)}${lk?'':'<button class="x" data-x="'+p.id+'" aria-label="Quitar a '+esc(p.name)+'">×</button>'}<br><small>predice</small></th>`).join('')}<th>Media</th><th>Desv.</th><th>Nota real</th></tr></thead><tbody>${P.map(s=>{const v=P.map(p=>pr(e,p,s)).filter(x=>x!=null),r=re(e,s);return `<tr><th>${esc(s.name)}</th>${P.map(p=>{const a=pr(e,p,s),d=a!=null&&r!=null?Math.abs(a-r):null;return `<td class="${d==null?'':d<=.5?'e0':d<=1?'e1':'e2'}${p===s?' sf':''}"><input type="number" step=".01" min="0" max="10" inputmode="decimal" value="${a??''}" ${lk?'disabled':''} data-k="p:${p.id}:${s.id}" aria-label="${esc(p.name)} predice la nota de ${esc(s.name)}"></td>`}).join('')}<td><b>${f(v.length?avg(v):null)}</b></td><td>${f(sd(v))}</td><td class="rl"><input type="number" step=".01" min="0" max="10" inputmode="decimal" value="${r??''}" ${lk?'disabled':''} data-k="r:${s.id}" aria-label="Nota real de ${esc(s.name)}"></td></tr>`}).join('')}</tbody></table></div><p class="m">El recuadro azul marca la autopredicción. Cuando hay nota real, el color indica el acierto: verde hasta 0,5 puntos de diferencia, naranja hasta 1 y rojo si es más.</p>`:`<p class="m">Empieza añadiendo a los alumnos: cada uno será una fila (la nota que se predice) y una columna (quién predice).</p>`)}
+function stats(e){const P=e.players||[];if(P.length<2)return `<p class="m">Añade al menos dos alumnos y sus predicciones para ver estadísticas.</p>`;
+const rows=P.map(s=>{const v=P.map(p=>pr(e,p,s)).filter(x=>x!=null);return{l:s.name,m:v.length?avg(v):null,r:re(e,s),self:pr(e,s,s),o:avg(P.filter(p=>p!==s).map(p=>pr(e,p,s)).filter(x=>x!=null))}});
+const have=rows.filter(r=>r.m!=null);if(!have.length)return `<p class="m">Introduce predicciones en la pestaña Predicciones para ver estadísticas.</p>`;
+const hasR=rows.some(r=>r.r!=null),E=rank([e]),srt=[...have].sort((a,b)=>b.m-a.m);
+const gen=P.map(p=>({l:p.name,v:[avg(P.map(s=>pr(e,p,s)).filter(x=>x!=null))]})).filter(r=>r.v[0]!=null).sort((a,b)=>b.v[0]-a.v[0]);
+const au=rows.filter(r=>r.self!=null&&r.o!=null).map(r=>({l:r.l,v:[r.self-r.o]})),am=Math.max(1,Math.ceil(Math.max(0,...au.map(r=>Math.abs(r.v[0])))));
+const rr=rows.filter(r=>r.r!=null);
+return `<dl class="k"><div><dt>Media predicha</dt><dd>${f(avg(have.map(r=>r.m)))}</dd></div>${hasR?`<div><dt>Media real</dt><dd>${f(avg(rr.map(r=>r.r)))}</dd></div>`:''}<div><dt>Mejor valorado</dt><dd>${esc(srt[0].l)}</dd></div><div><dt>Peor valorado</dt><dd>${esc(srt.at(-1).l)}</dd></div></dl>
+<h3>Nota media predicha${hasR?' y nota real':''}</h3>${hasR?'<div class="lg"><b style="background:var(--pred)"></b>Predicha<b style="background:var(--real)"></b>Real</div>':''}${bars(have.map(r=>({l:r.l,v:hasR?[r.m,r.r]:[r.m]})),{n:hasR?2:1})}
+${hasR?`<h3>Ranking de este examen</h3>${rt(E)}${bars(E.map(r=>({l:r.n,v:[r.mae]})),{hi:Math.max(1,Math.ceil(Math.max(...E.map(r=>r.mae))))})}<h3>Predicho frente a real</h3><p class="m">Cada punto es una predicción. Cuanto más cerca de la línea naranja, más acertada.</p>${sc(errs(e))}`:''}
+${au.length?`<h3>Autopredicción frente a los compañeros</h3><p class="m">Nota que se pone cada uno menos la que le ponen los demás: naranja, se pone menos; azul, se pone más.</p>${bars(au,{lo:-am,hi:am})}`:''}
+<h3>Generosidad: nota media que pone cada uno</h3>${bars(gen)}`}
+function render(){const ak=document.activeElement?.dataset?.k;
+const nav=`<nav><button data-go="list" class="${V.t=='rank'?'':'on'}">Exámenes</button><button data-go="rank" class="${V.t=='rank'?'on':''}">Ranking global</button></nav>`;let h;
+if(V.t=='exam'&&S[V.id]){const e=S[V.id];h=`<p><a href="#" data-go="list">← Todos los exámenes</a></p><h2>${esc(e.name)}</h2><p class="m">${esc(e.date||'Sin fecha')} · ${V.cf==V.id?`¿Eliminar este examen y todas sus predicciones? <a href="#" data-ok="${V.id}">Sí, eliminar</a> · <a href="#" data-no="1">Cancelar</a>`:(e.locked?'Examen cerrado':`<a href="#" data-del="${V.id}">Eliminar examen</a>`)}</p>${lockbar(e)}<nav><button data-tab="pred" class="${V.tab=='pred'?'on':''}">Predicciones</button><button data-tab="stats" class="${V.tab=='stats'?'on':''}">Estadísticas</button></nav>${V.tab=='pred'?grid(e):stats(e)}`}
+else if(V.t=='rank'){h=`<h2>Ranking global</h2><p class="m">Suma todos los exámenes con nota real.</p>${rt(rank(Object.values(S)))}`}
+else{const ids=Object.keys(S).sort((a,b)=>(S[b].date||'').localeCompare(S[a].date||''));h=`<form class="row" data-f="exam"><input name="n" placeholder="Nombre del examen (ej. Física, tema 3)" required maxlength="60" aria-label="Nombre del examen"><input name="d" type="date" aria-label="Fecha" style="flex:0 1 160px"><button class="b">Crear examen</button></form>${ids.length?ids.map(id=>{const e=S[id],P=e.players||[],n=P.filter(s=>re(e,s)!=null).length;return `<div class="ex" data-open="${id}" tabindex="0" role="button"><span><b>${esc(e.name)}</b><br><small>${esc(e.date||'Sin fecha')}</small></span><span class="m">${P.length} alumnos · notas reales: ${n} de ${P.length}${e.locked?' · cerrado':''}</span></div>`}).join(''):`<p class="m">Aún no hay exámenes. Crea el primero con el formulario de arriba.</p>`}<h3>Participantes</h3><p class="m">Aparecen automáticamente en cada examen nuevo. Quitar a alguien aquí no cambia los exámenes que ya existen; para quitarlo de un examen concreto, usa la × de su columna.</p><div>${R.map(p=>`<span class="chip">${esc(p.name)}<button class="x" data-rr="${p.id}" aria-label="Quitar a ${esc(p.name)} de los participantes">×</button></span>`).join('')||'<p class="m">Aún no hay participantes.</p>'}</div><form class="row" data-f="roster"><input name="n" placeholder="Nombre del participante" required maxlength="30" aria-label="Nombre del participante"><button class="b">Añadir participante</button></form>`}
+A.innerHTML=`<h1>Porra de notas</h1>${nav}${h}<p class="m"><a href="#" data-out="1">Cerrar sesión</a></p>`;if(ak)$(`[data-k="${ak}"]`)?.focus()}
+A.addEventListener('click',ev=>{const t=ev.target.closest('[data-go],[data-open],[data-tab],[data-x],[data-del],[data-ok],[data-no],[data-rr],[data-lk],[data-lkok],[data-un],[data-out]');if(!t)return;ev.preventDefault();const d=t.dataset;
+if(d.go)V={t:d.go,tab:'pred'};else if(d.open)V={t:'exam',id:d.open,tab:'pred'};else if(d.tab)V.tab=d.tab;
+else if(d.x){const e=S[V.id];save(V.id,{players:e.players.filter(p=>p.id!=d.x)});toast('Quitado de este examen. Si lo vuelves a añadir, recupera sus predicciones.')}
+else if(d.del)V.cf=d.del;
+else if(d.out){sb.auth.signOut().then(()=>location.reload());return}
+else if(d.no)V.cf=V.lk=null;
+else if(d.lk)V.lk=d.lk;
+else if(d.lkok){const id=d.lkok,e=S[id],l={name:e.name,date:e.date||'',players:e.players||[],preds:e.preds||{},real:e.real||{},at:Date.now()};V.lk=null;L[id]=l;if(db)mix();else S[id]={...e,...l,locked:true};if(db)q=q.then(()=>db.doc('locks/'+id).set(l)).catch(()=>toast('Solo el propietario de la página puede cerrar exámenes.'))}
+else if(d.un){const id=d.un;delete L[id];if(db){mix();q=q.then(()=>db.doc('locks/'+id).delete()).catch(()=>toast('Solo el propietario de la página puede reabrir exámenes.'))}}
+else if(d.ok){const id=d.ok;delete S[id];if(db)q=q.then(()=>db.doc('exams/'+id).delete()).catch(fail);V={t:'list'}}
+else if(d.rr)setRoster(R.filter(p=>p.id!=d.rr));
+render()});
+A.addEventListener('keydown',ev=>{if(ev.key=='Enter'&&ev.target.dataset.open)ev.target.click()});
+A.addEventListener('submit',ev=>{ev.preventDefault();const fm=ev.target;if(fm.dataset.f=='login'||fm.dataset.f=='code')return;const n=fm.n.value.trim();if(!n)return;
+if(fm.dataset.f=='exam'){const id=uid('x'),d={name:n,date:fm.d.value,players:R.map(p=>({...p})),preds:{},real:{}};S[id]=d;if(db)q=q.then(()=>db.doc('exams/'+id).set(d)).catch(fail);V={t:'exam',id,tab:'pred'}}
+else if(fm.dataset.f=='roster'){if(!R.some(p=>p.name.toLowerCase()==n.toLowerCase()))setRoster([...R,{id:uid('p'),name:n}])}
+else{const cur=S[V.id].players||[];let p=R.find(p=>p.name.toLowerCase()==n.toLowerCase());if(cur.some(c=>c.id==p?.id||c.name.toLowerCase()==n.toLowerCase())){toast(n+' ya está en este examen.');return}
+if(!p){p={id:uid('p'),name:n};setRoster([...R,p])}save(V.id,{players:[...cur,p]})}render()});
+A.addEventListener('change',ev=>{const k=ev.target.dataset.k;if(!k||S[V.id]?.locked)return;const [t,a,b]=k.split(':'),v=num(ev.target.value);
+if(v!=null&&(v<0||v>10)){toast('La nota debe estar entre 0 y 10.');ev.target.value='';return setTimeout(render,0)}
+save(V.id,t=='p'?{preds:{[a]:{[b]:v}}}:{real:{[a]:v}});setTimeout(render,0)});
+// ---- Supabase: rellena estas dos líneas (Project Settings > API) ----
+const SUPABASE_URL='https://jaazpqwcnepkynkiasqu.supabase.co/rest/v1/',SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphYXpwcXdjbmVwa3lua2lhc3F1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3OTIwMjEsImV4cCI6MjEwODM2ODAyMX0.QBb6TXq7jYUyWU1jn8G06GNRswCqX71ZQw1O5hagMq8';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+// Pequeña capa que imita el almacén que usaba la app en Claude (doc/collection/onSnapshot/set/update/delete).
+function mkDb(){
+const one=r=>({id:r.path.split('/').pop(),exists:true,data:()=>r.data});
+const watch=(match,load,next,err)=>{let on=true;const run=async()=>{try{const s=await load();if(on)next(s)}catch(e){err&&err(e)}};run();
+const ch=sb.channel('w'+Math.random().toString(36).slice(2)).on('postgres_changes',{event:'*',schema:'public',table:'docs'},p=>{if(match((p.new&&p.new.path)||(p.old&&p.old.path)||''))run()}).subscribe();
+return()=>{on=false;sb.removeChannel(ch)}};
+return{
+collection:c=>({onSnapshot:(next,err)=>watch(p=>p.startsWith(c+'/')&&!p.slice(c.length+1).includes('/'),async()=>{const{data,error}=await sb.from('docs').select('path,data').like('path',c+'/%');if(error)throw error;return{docs:data.filter(r=>!r.path.slice(c.length+1).includes('/')).map(one)}},next,err)}),
+doc:path=>({
+onSnapshot:(next,err)=>watch(p=>p===path,async()=>{const{data,error}=await sb.from('docs').select('path,data').eq('path',path).maybeSingle();if(error)throw error;return data?one(data):{exists:false,data:()=>undefined}},next,err),
+set:async d=>{const{error}=await sb.from('docs').upsert({path,data:d});if(error)throw error},
+update:async d=>{const{error}=await sb.rpc('merge_doc',{p_path:path,p_patch:d});if(error)throw error},
+delete:async()=>{const{error}=await sb.from('docs').delete().eq('path',path);if(error)throw error}})}}
+function login(msg){A.innerHTML=`<h1>Porra de notas</h1><p class="m">Entra con el código que te ha dado el administrador del grupo.</p><form class="row" data-f="code"><input name="c" type="password" placeholder="Código del grupo" required autocomplete="off" aria-label="Código del grupo"><button class="b">Entrar</button></form><p class="m">${msg||''}</p><details><summary class="m">Soy el administrador</summary><form class="row" data-f="login"><input name="e" type="email" placeholder="Correo" required aria-label="Correo"><input name="p" type="password" placeholder="Contraseña" minlength="6" required aria-label="Contraseña"><button class="b">Entrar</button></form></details>`}
+A.addEventListener('submit',async ev=>{const fm=ev.target,t=fm.dataset.f;if(t!='login'&&t!='code')return;ev.preventDefault();
+if(t=='login'){const r=await sb.auth.signInWithPassword({email:fm.e.value.trim(),password:fm.p.value});if(r.error)return login(esc(r.error.message));return start()}
+const{data:{session}}=await sb.auth.getSession();
+if(!session){const r=await sb.auth.signInAnonymously();if(r.error)return login('No se pudo entrar sin correo: '+esc(r.error.message))}
+const{data:ok}=await sb.rpc('join_with_code',{p_code:fm.c.value.trim()});
+if(!ok)return login('Código incorrecto.');start()});
+async function start(){
+const{data:{session}}=await sb.auth.getSession();if(!session)return login();
+const{data:mem}=await sb.rpc('is_member');if(!mem)return login('Introduce el código del grupo para entrar.');
+db=mkDb();const{data:adm}=await sb.rpc('is_admin');OWN=!!adm;
+db.doc('meta/roster').onSnapshot(s=>{if(s.exists)R=s.data().members||[];if(document.activeElement?.tagName!='INPUT')render()},()=>{});
+db.collection('exams').onSnapshot(sn=>{RS={};sn.docs.forEach(d=>RS[d.id]=d.data());mix();if(document.activeElement?.tagName!='INPUT')render()},()=>{});
+db.collection('locks').onSnapshot(sn=>{L={};sn.docs.forEach(d=>L[d.id]=d.data());mix();if(document.activeElement?.tagName!='INPUT')render()},()=>{});
+render()}
+if(SUPABASE_URL.includes('TU-PROYECTO'))A.innerHTML='<h1>Porra de notas</h1><p>Falta configurar Supabase: edita SUPABASE_URL y SUPABASE_KEY al final del archivo.</p>';
+else start().catch(e=>login('Error de conexión: '+esc(e.message)));
+</script></body></html>
