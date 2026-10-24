@@ -107,7 +107,7 @@ A.addEventListener('change',ev=>{const k=ev.target.dataset.k;if(!k||S[V.id]?.loc
 if(v!=null&&(v<0||v>10)){toast('La nota debe estar entre 0 y 10.');ev.target.value='';return setTimeout(render,0)}
 save(V.id,t=='p'?{preds:{[a]:{[b]:v}}}:{real:{[a]:v}});setTimeout(render,0)});
 // ---- Supabase: rellena estas dos líneas (Project Settings > API) ----
-const SUPABASE_URL='https://jaazpqwcnepkynkiasqu.supabase.co/rest/v1/',SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphYXpwcXdjbmVwa3lua2lhc3F1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3OTIwMjEsImV4cCI6MjEwODM2ODAyMX0.QBb6TXq7jYUyWU1jn8G06GNRswCqX71ZQw1O5hagMq8';
+const SUPABASE_URL='https://jaazpqwcnepkynkiasqu.supabase.co',SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphYXpwcXdjbmVwa3lua2lhc3F1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3OTIwMjEsImV4cCI6MjEwODM2ODAyMX0.QBb6TXq7jYUyWU1jn8G06GNRswCqX71ZQw1O5hagMq8';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 // Pequeña capa que imita el almacén que usaba la app en Claude (doc/collection/onSnapshot/set/update/delete).
 function mkDb(){
